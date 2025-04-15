@@ -1,0 +1,9 @@
+Package: luks-password-changer
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Your Name <you@example.com>
+Depends: python3, python3-gi, gir1.2-gtk-4.0, cryptsetup, pkexec
+Description: GTK4 app to change LUKS encrypted partition password
+ A user-friendly GUI for changing LUKS passwords, including detection of encrypted devices and password strength meter.
