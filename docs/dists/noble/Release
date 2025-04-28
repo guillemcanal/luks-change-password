@@ -1,0 +1,17 @@
+Codename: noble
+Date: Mon, 28 Apr 2025 15:51:05 UTC
+Architectures: amd64
+Components: main
+Description: guillemcanal/luks-change-password
+MD5Sum:
+ a8495514f95a68dee1e187fc4820a62e 639 main/binary-amd64/Packages
+ 4971a52c08223579e2a82c33ae2e8125 445 main/binary-amd64/Packages.gz
+ b7601222bd3d58e0e20cac664ac3f699 83 main/binary-amd64/Release
+SHA1:
+ c1454b60c14f8a7211f176c03ffece820ef796bc 639 main/binary-amd64/Packages
+ 7a969f5ebc4a2eba40fdc3abfc70b17809e473d2 445 main/binary-amd64/Packages.gz
+ 0031a9d8572a4ff3cd4da252442ff34f79322147 83 main/binary-amd64/Release
+SHA256:
+ 40079292fca5a39917363b38c33a30d64751e7e4398e7aca94b6d2719adf9dc2 639 main/binary-amd64/Packages
+ 01c81e242d82fb74dfd5d54cfe1c98edf4684ee830396dc1b4de65134e87386e 445 main/binary-amd64/Packages.gz
+ 5ec99d74cc2ae98a2e2b4f3e3f4d8962a390b4f8a445e8d570940a7ae40033b9 83 main/binary-amd64/Release
