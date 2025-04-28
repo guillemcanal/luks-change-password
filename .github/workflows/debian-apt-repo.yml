@@ -1,0 +1,60 @@
+name: Build & Publish Debian Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish:
+    permissions: write-all
+    environment: Main
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dpkg gpg reprepro
+
+      - name: Build Debian package
+        id: debian-package
+        run: dpkg-deb --build src luks-password-changer.deb    
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Build APT repository
+        run: |
+          KEY_ID="$(gpg --list-keys --with-colons | awk -F: '/^pub/ {print $5; exit}')"
+          mkdir -p repo/{conf,incoming}
+          echo "Codename: noble" > repo/conf/distributions
+          echo "Suite: stable" >> repo/conf/distributions
+          echo "Components: main" >> repo/conf/distributions
+          echo "Architectures: amd64" >> repo/conf/distributions
+          echo "SignWith: $KEY_ID" >> repo/conf/distributions
+          
+          for deb in *.deb; do
+            reprepro -b repo includedeb noble "$deb"
+          done
+
+          cp ./public.key ./repo/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './repo'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+
