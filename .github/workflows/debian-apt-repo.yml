@@ -1,0 +1,41 @@
+name: Build & Publish Debian Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish:
+    permissions: write-all
+    environment: Main
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dpkg-dev
+          sudo locale-gen C.UTF-8
+          sudo update-locale LANG=C.UTF-8
+
+      - name: Build Debian package
+        id: debian-package
+        run: dpkg-deb -Z gzip --build src luks-password-changer.deb    
+
+      - name: Public de APT repository
+        uses: jrandiny/apt-repo-action@v2.0.1
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          repo_supported_arch: amd64
+          repo_supported_version: noble
+          file: luks-password-changer.deb
+          file_target_version: noble
+          public_key: ${{ secrets.GPG_PUBLIC_KEY }}
+          private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          key_passphrase: ${{ secrets.PASSPHRASE }}
+          repo_folder: docs
+
